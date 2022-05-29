@@ -174,12 +174,14 @@
   <script>
 
     loadPage = function () {
-      const spnId = sessionStorage.getItem('spnId');
+      let url = window.location.href;
+      url = url.split('/');
+      const spnId = url[url.length - 1];
+      //const spnId = sessionStorage.getItem('spnId');
       const mode = sessionStorage.getItem('mode');
       if (spnId) {
-        console.log(spnId);
 
-        fetch(`/api/spn/${spnId}`, {
+        fetch(`/api/${spnId}`, {
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -260,8 +262,12 @@
     rowFocused = function (el) {
       sessionStorage.setItem('spnId', el.target.id);
       sessionStorage.setItem('mode', 'edit');
-      window.location.href = `/api/spn/createPanel/${el.target.id}`
+      window.location.href = `/api/createPanel/${el.target.id}`
     }
+
+    window.addEventListener('popstate', function (event) {
+      console.log(55555)
+    });
 
   </script>
 </head>
@@ -269,7 +275,7 @@
 <body style=" direction:ltr; margin-left: 50px;" onload="loadPage()">
 
   <h2>
-    <span class="arrow-right" onclick="window.location.href='/api/spn/indexSpn'"></span>
+    <span class="arrow-right" onclick="window.location.href='/api/indexSpn'"></span>
     <small>Back to index</small>
   </h2>
 

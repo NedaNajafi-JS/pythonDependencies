@@ -79,14 +79,18 @@
             const formData = new FormData()
             formData.append('poetry', el.target.files[0])
 
-            fetch('/api/spn/loadFile', {
+            fetch('/api/loadFile', {
                 method: 'POST',
                 body: formData
             })
                 .then(res => {
                     res.text()
                         .then(() => {
-                            window.location.href = `/api/spn/indexSpn`
+                            if(res.status === 200){
+                                window.location.href = `/api/indexSpn`
+                            }else{
+                                alert('Invalid input file format')
+                            }
                         })
                 })
 

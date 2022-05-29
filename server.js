@@ -1,5 +1,4 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors=require('cors');
 const path = require('path');
@@ -15,6 +14,6 @@ app.use(express.static(path.dirname(require.main.filename) + '/statics'));
 
 const spnAPIs = require('./routes/spnPanelRout');
 
-app.use('/api/spn', spnAPIs);
+app.use('/api', spnAPIs);
 
 app.listen(port, () => console.log(`Server Running on port ${port}`))

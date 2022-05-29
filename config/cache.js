@@ -5,19 +5,12 @@ class Cache {
         this.cache = new NodeCache();
     }
 
-    get(key, storeFunction) {
+    get(key) {
 
         const value = this.cache.get(key);
         if (value) {
             return value;
         }
-
-        return storeFunction()
-
-            .then(result => {
-                result ? this.cache.set(key, result) : '';
-                return result;
-            })
 
     }
 

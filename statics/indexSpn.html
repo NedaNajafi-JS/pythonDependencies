@@ -14,7 +14,7 @@
             font-family: "OpenSans" !important;
             min-width: 400px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-            width: 80%;
+            width: 50%;
         }
 
         .styled-table thead tr {
@@ -55,15 +55,42 @@
             cursor: pointer;
         }
 
+        span {
+            content: "\2190";
+        }
+
+        .arrow-right {
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-right: 30px solid rgb(12, 12, 12);
+            /* position: relative;
+      left: -40%; */
+            cursor: pointer;
+        }
+
+        h2 {
+            position: relative;
+            left: -40%;
+        }
+
+        span {
+            display: inline-block !important;
+        }
+
         body {
             text-align: -webkit-center;
+            font-family: "OpenSans" !important;
+            font-size: 1.5rem;
+            background-color: #f3efef;
         }
     </style>
 
     <script>
         loadPage = function () {
 
-            fetch('/api/spn/load', {
+            fetch('/api/load', {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
@@ -107,13 +134,18 @@
         rowFocused = function (el) {
             sessionStorage.setItem('spnId', el.target.id);
             sessionStorage.setItem('mode', 'edit');
-            window.location.href = `/api/spn/createPanel/${el.target.id}`
+            window.location.href = `/api/createPanel/${el.target.id}`
         }
 
     </script>
 </head>
 
 <body onload="loadPage()">
+
+    <h2>
+        <span class="arrow-right" onclick="window.location.href='/api'"></span>
+        <small>Upload another file</small>
+    </h2>
 
     <table id="spnContent" class="styled-table"">
         <tr">

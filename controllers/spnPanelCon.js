@@ -22,11 +22,15 @@ exports.fillData = async (req, res, next) => {
 
     let data = CACHE.get('config');
 
-    return res.status(200).json(data);
+    return res.status(200).json(data || []);
 }
 exports.get = async (req, res, next) => {
 
     let data_ = CACHE.get('config');
+
+    if (!data_) {
+        return res.status(200).json([]);
+    }
 
     let data = await data_.find(pack => pack.name === req.params.id);
 
@@ -49,7 +53,11 @@ exports.chooseFile = async (req, res, next) => {
 }
 
 exports.loadFile = async (req, res, next) => {
-    
+
+    if (req.fileValidationError) {
+        return res.status(400).json('Ivalid input type');
+    }
+
     await fs.readFile(path.dirname(require.main.filename) + `/statics/${req.file.filename}`, 'utf8', async (err, data) => {
 
         let arr = data.split(/\n\s*\n/)
@@ -77,7 +85,7 @@ exports.loadFile = async (req, res, next) => {
                     for (let i = 1; i < pack.length; i++) {
                         let j = pack[i].split(' = ');
                         if (j[0]) {
-                            dependencies_json.push(j[0].replaceAll(" ", ""));
+                            dependencies_json.push(j[0].replace(/ /g, ""));
                         }
                     }
 
@@ -86,12 +94,12 @@ exports.loadFile = async (req, res, next) => {
 
                 let j = p.split('=');
                 if (j[0] && j[1]) {
-                    j[1] = j[1].replaceAll('"', "");
-                    j[0] = j[0].replaceAll(" ", "");
+                    j[1] = j[1].replace(/"/g, "");
+                    j[0] = j[0].replace(/ /g, "");
                     if (j[0] === 'description') {
                         json_[j[0]] = j[1];
-                    }else{
-                        json_[j[0]] = j[1].replaceAll(" ", "");
+                    } else {
+                        json_[j[0]] = j[1].replace(/ /g, "");
                     }
                 }
             };
@@ -112,11 +120,12 @@ exports.loadFile = async (req, res, next) => {
         packages.sort((a, b) => a.name < b.name ? -1 : 1);
         packages.splice(packages.length - 2, 2)
         CACHE.set('config', packages);
+        res.end();
         fs.unlink(path.dirname(require.main.filename) + `/statics/${req.file.filename}`, (err) => {
             console.log(err)
-        })
+        });
     });
 
-    res.end();
+
 
 }
