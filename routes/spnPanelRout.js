@@ -25,7 +25,7 @@ let storage = multer.diskStorage({
 let upload = multer({storage: storage});
 
 router.route('/')
-.get(spnController.chooseFile/*indexSpn*/);
+.get(spnController.chooseFile);
 
 router.route('/indexSpn')
 .get(spnController.indexSpn);
