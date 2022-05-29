@@ -8,8 +8,7 @@ function response (data)  {
 function ServerError (error) {
     this.status = 'fail',
     this.data = {
-        message: 'خطای سرور',
-        messageEN: 'Server error',
+        message: 'Server error',
         error: error
     }
 }
@@ -17,8 +16,7 @@ function ServerError (error) {
 function ParameterError (error) {
     this.status ='fail',
     this.data = {
-        message: 'خطای در پارامترهای ورودی',
-        messageEN: 'Input error',
+        message: 'Input error',
         error: error
     }
 }
